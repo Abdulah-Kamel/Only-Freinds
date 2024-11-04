@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import UserName from "../../Components/SignUp/UserName";
 import UserEmail from "../../Components/SignUp/UserEmail";
 import FirstName from "../../Components/SignUp/FirstName";
@@ -11,23 +11,27 @@ import LastName from "../../Components/SignUp/LastName";
 import Password from "../../Components/SignUp/Password";
 import RePassword from "../../Components/SignUp/RePassword";
 const index = () => {
+  const navigate = useNavigate();
+  const [lodaing, setLoading] = useState(false);
   const signUp = (data) => {
-    console.log(data);
-
     axios
       .post("https://mazag-production.up.railway.app/users/", {
         ...data,
       })
       .then((res) => {
-        console.log(res);
+        if (res.status === 201) {
+          setLoading(false);
+          navigate("/login");
+        }
       })
       .catch((err) => {
+        setLoading(false);
         console.log(err);
       });
   };
   const schema = yup
     .object({
-      userName: yup.string().required("User name is required"),
+      username: yup.string().required("User name is required"),
       password: yup
         .string()
         .required("Password is required")
@@ -36,8 +40,8 @@ const index = () => {
           "Password must start with an uppercase letter and be at least 8 characters long"
         ),
       email: yup.string().email("Invalid email").required("Email is required"),
-      firstName: yup.string().required("First name is required"),
-      lastName: yup.string().required("Last name is required"),
+      first_name: yup.string().required("First name is required"),
+      last_name: yup.string().required("Last name is required"),
       re_password: yup
         .string()
         .required("Please confirm your password")
@@ -68,9 +72,21 @@ const index = () => {
           <RePassword register={register} errors={errors} />
 
           <section className="flex justify-between items-center w-full">
-            <button type="submit" className="btn btn-outline btn-primary w-28">
-              Sign Up
-            </button>
+            {lodaing ? (
+              <button className="btn btn-disabled btn-outline btn-primary">
+                <span className="loading loading-spinner"></span>
+                loading
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="btn btn-outline btn-primary w-28"
+                onClick={() => setLoading(true)}
+              >
+                Sign Up
+              </button>
+            )}
+
             <p>
               Registered already?
               <Link to="/login" className="link link-primary text-lg ps-1">

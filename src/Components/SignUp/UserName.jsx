@@ -5,7 +5,7 @@ const UserName = ({ register, errors }) => {
     <section className="w-full">
       <label
         className={`input input-bordered ${
-          errors.userName ? "input-error" : ""
+          errors.username ? "input-error" : ""
         } flex items-center gap-2`}
       >
         <svg
@@ -20,11 +20,11 @@ const UserName = ({ register, errors }) => {
           type="text"
           className="grow"
           placeholder="Username"
-          {...register("userName")}
+          {...register("username")}
         />
       </label>
-      {errors.userName && (
-        <p className="text-red-400 mt-2">{errors.userName?.message}</p>
+      {errors.username && (
+        <p className="text-red-400 mt-2">{errors.username?.message}</p>
       )}
     </section>
   );
