@@ -86,14 +86,15 @@ const index = () => {
                 Sign Up
               </button>
             )}
-
+          </section>
+            <section className="w-full flex justify-between items-center">
             <p>
               Registered already?
               <Link to="/login" className="link link-primary text-lg ps-1">
                 Login Now
               </Link>
             </p>
-          </section>
+            </section>
         </form>
       </section>
     </section>

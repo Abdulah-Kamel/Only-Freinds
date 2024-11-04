@@ -4,17 +4,21 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import UserName from "../../Components/SignUp/UserName";
-import Password from "../../Components/SignUp/Password";
+import UserEmail from "../../Components/SignUp/UserEmail";
+import TextInput from "../../Components/TextInput/TextInput";
 const index = () => {
   const navigate = useNavigate();
   const [lodaing, setLoading] = useState(false);
   const signUp = (data) => {
+    setLoading(true);
     console.log(data);
     axios
-      .post("https://mazag-production.up.railway.app/auth/jwt/create", {
-        ...data,
-      })
+      .post(
+        "https://mazag-production.up.railway.app/users/reset_password_confirm/",
+        {
+          ...data,
+        }
+      )
       .then((res) => {
         setLoading(false);
         if (res.status === 200) {
@@ -31,14 +35,17 @@ const index = () => {
   };
   const schema = yup
     .object({
-      username: yup.string().required("User name or Email is required"),
-      password: yup
+      new_password: yup
         .string()
         .required("Password is required")
         .matches(
           /^[A-Z][a-zA-Z0-9!@#$%^&*()_+]{7,}$/,
           "Password must start with an uppercase letter and be at least 8 characters long"
         ),
+      re_new_password: yup
+        .string()
+        .required("Re Password is required")
+        .oneOf([yup.ref("new_password")], "Passwords must match"),
     })
     .required();
 
@@ -58,8 +65,8 @@ const index = () => {
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col items-center justify-center gap-4 sm:w-[75%] w-full"
         >
-          <UserName register={register} errors={errors} />
-          <Password register={register} errors={errors} />
+          <TextInput placeholder="New Password" register={register} errors={errors} name="new_password" type={"password"}/>
+          <TextInput placeholder="Re New Password" register={register} errors={errors} name="re_new_password" type={"password"}/>
 
           <section className="flex justify-between items-center w-full">
             {lodaing ? (
@@ -71,25 +78,10 @@ const index = () => {
               <button
                 type="submit"
                 className="btn btn-outline btn-primary w-28"
-                onClick={() => setLoading(true)}
               >
-                Sign In
+                Send
               </button>
             )}
-            <p>
-              <Link to="/forget-password" className="link no-underline link-primary text-lg ps-1">
-                Forget Password?
-              </Link>
-            </p>
-          </section>
-          <section className="w-full flex justify-between items-center">
-            <p>
-              New User?
-              <Link to="/signup" className="link link-primary text-lg ps-1">
-                SignUp
-              </Link>
-            </p>
-            
           </section>
         </form>
       </section>
