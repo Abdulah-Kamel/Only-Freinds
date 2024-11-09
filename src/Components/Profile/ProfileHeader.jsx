@@ -8,7 +8,6 @@ const ProfileHeader = () => {
       <section className="flex max-lg:flex-col justify-between items-center">
         <UserInfo
           userImage="https://picsum.photos/150"
-          userName="Samantha"
           userBio="Artist, Designer, Age 28"
         />
         <ProfileActions />

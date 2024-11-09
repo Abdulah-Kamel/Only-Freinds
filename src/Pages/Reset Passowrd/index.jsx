@@ -4,12 +4,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import UserEmail from "../../Components/SignUp/UserEmail";
 import TextInput from "../../Components/TextInput/TextInput";
+import { FaKey } from "react-icons/fa6";
+
 const index = () => {
   const navigate = useNavigate();
   const [lodaing, setLoading] = useState(false);
-  const signUp = (data) => {
+  const handleResetPassword = (data) => {
     setLoading(true);
     console.log(data);
     axios
@@ -57,34 +58,43 @@ const index = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => signUp(data);
+  const onSubmit = (data) => handleResetPassword(data);
   return (
-    <section className="container mx-auto w-full h-full max-sm:px-4 py-5">
-      <section className="w-full h-full flex justify-center items-center">
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col items-center justify-center gap-4 sm:w-[75%] w-full"
-        >
-          <TextInput placeholder="New Password" register={register} errors={errors} name="new_password" type={"password"}/>
-          <TextInput placeholder="Re New Password" register={register} errors={errors} name="re_new_password" type={"password"}/>
+    <section className="container min-h-screen mx-auto max-sm:px-4 py-5 flex justify-center items-center">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col items-center justify-center gap-4 sm:w-[75%] w-full"
+      >
+        <TextInput
+          placeholder="New Password"
+          register={register}
+          errors={errors}
+          name="new_password"
+          type={"password"}
+          icon={<FaKey color="#626973" size={15} />}
+        />
+        <TextInput
+          placeholder="Re New Password"
+          register={register}
+          errors={errors}
+          name="re_new_password"
+          type={"password"}
+          icon={<FaKey color="#626973" size={15} />}
+        />
 
-          <section className="flex justify-between items-center w-full">
-            {lodaing ? (
-              <button className="btn btn-disabled btn-outline btn-primary">
-                <span className="loading loading-spinner"></span>
-                loading
-              </button>
-            ) : (
-              <button
-                type="submit"
-                className="btn btn-outline btn-primary w-28"
-              >
-                Send
-              </button>
-            )}
-          </section>
-        </form>
-      </section>
+        <section className="flex justify-between items-center w-full">
+          {lodaing ? (
+            <button className="btn btn-disabled btn-outline btn-primary">
+              <span className="loading loading-spinner"></span>
+              loading
+            </button>
+          ) : (
+            <button type="submit" className="btn btn-outline btn-primary w-28">
+              Send
+            </button>
+          )}
+        </section>
+      </form>
     </section>
   );
 };

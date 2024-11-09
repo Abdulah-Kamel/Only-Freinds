@@ -12,6 +12,8 @@ import Notifictions from "./Pages/Notifiction";
 import Profile from "./Pages/Profile";
 import ForgetPassword from "./Pages/Forget Password";
 import ResetPassowrd from "./Pages/Reset Passowrd";
+import UserContextProvider from "./Store/UserStore";
+
 function App() {
   const router = createBrowserRouter([
     {
@@ -76,7 +78,7 @@ function App() {
       path: "/forget-password",
       element: (
         <PublicRoute>
-          <ForgetPassword/>
+          <ForgetPassword />
         </PublicRoute>
       ),
     },
@@ -84,13 +86,17 @@ function App() {
       path: "/reset-password",
       element: (
         <PublicRoute>
-          <ResetPassowrd/>
+          <ResetPassowrd />
         </PublicRoute>
       ),
     },
   ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <UserContextProvider>
+      <RouterProvider router={router} />
+    </UserContextProvider>
+  );
 }
 
 export default App;

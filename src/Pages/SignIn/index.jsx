@@ -4,8 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import UserName from "../../Components/SignUp/UserName";
-import Password from "../../Components/SignUp/Password";
+import TextInput from "../../Components/TextInput/TextInput";
 const index = () => {
   const navigate = useNavigate();
   const [lodaing, setLoading] = useState(false);
@@ -52,15 +51,25 @@ const index = () => {
 
   const onSubmit = (data) => signUp(data);
   return (
-    <section className="container mx-auto w-full h-full max-sm:px-4 py-5">
-      <section className="w-full h-full flex justify-center items-center">
+    <section className="container min-h-screen mx-auto max-sm:px-4 py-5 flex justify-center items-center">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col items-center justify-center gap-4 sm:w-[75%] w-full"
         >
-          <UserName register={register} errors={errors} />
-          <Password register={register} errors={errors} />
-
+          <TextInput
+            placeholder="User Name or Email"
+            register={register}
+            errors={errors}
+            name="username"
+            type="text"
+          />
+          <TextInput
+            placeholder="Password"
+            register={register}
+            errors={errors}
+            name="password"
+            type="password"
+          />
           <section className="flex justify-between items-center w-full">
             {lodaing ? (
               <button className="btn btn-disabled btn-outline btn-primary">
@@ -77,7 +86,10 @@ const index = () => {
               </button>
             )}
             <p>
-              <Link to="/forget-password" className="link no-underline link-primary text-lg ps-1">
+              <Link
+                to="/forget-password"
+                className="link no-underline link-primary text-lg ps-1"
+              >
                 Forget Password?
               </Link>
             </p>
@@ -89,10 +101,8 @@ const index = () => {
                 SignUp
               </Link>
             </p>
-            
           </section>
         </form>
-      </section>
     </section>
   );
 };
