@@ -9,6 +9,7 @@ import TextInput from "../../Components/TextInput/TextInput";
 const index = () => {
   const navigate = useNavigate();
   const [lodaing, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const signUp = (data) => {
     setLoading(true);
     axios
@@ -21,9 +22,11 @@ const index = () => {
           navigate("/login");
         }
       })
-      .catch((err) => {
+      .catch((error) => {
         setLoading(false);
-        console.log(err);
+        const messages = Object.values(error.response.data).flat();
+        console.log(messages);
+        setError(messages);
       });
   };
   const schema = yup
@@ -61,80 +64,89 @@ const index = () => {
   }, [errors]);
   return (
     <section className="container min-h-screen mx-auto max-sm:px-4 py-5 flex justify-center items-center">
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col items-center justify-center gap-4 sm:w-[75%] w-full"
-        >
-          <TextInput
-            placeholder="Username"
-            register={register}
-            errors={errors}
-            name={"username"}
-            type={"text"}
-          />
-          <TextInput
-            placeholder="Email"
-            register={register}
-            errors={errors}
-            name={"email"}
-            type={"email"}
-          />
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col items-center justify-center gap-4 sm:w-[75%] w-full"
+      >
+        <TextInput
+          placeholder="Username"
+          register={register}
+          errors={errors}
+          name={"username"}
+          type={"text"}
+        />
+        <TextInput
+          placeholder="Email"
+          register={register}
+          errors={errors}
+          name={"email"}
+          type={"email"}
+        />
 
-          <TextInput
-            placeholder="First Name"
-            register={register}
-            errors={errors}
-            name={"first_name"}
-            type={"text"}
-          />
-          <TextInput
-            placeholder="Last Name"
-            register={register}
-            errors={errors}
-            name={"last_name"}
-            type={"text"}
-          />
-          <TextInput
-            placeholder="Password"
-            register={register}
-            errors={errors}
-            name={"password"}
-            type={"password"}
-          />
-          <TextInput
-            placeholder="Re-Password"
-            register={register}
-            errors={errors}
-            name={"re_password"}
-            type={"password"}
-          />
-          <section className="flex justify-between items-center w-full">
-            {lodaing ? (
-              <button className="btn btn-disabled btn-outline btn-primary">
-                <span className="loading loading-spinner"></span>
-                loading
-              </button>
-            ) : (
-              <button
-                type="submit"
-                className="btn btn-outline btn-primary w-28"
-                onClick={() => setLoading(true)}
-                disabled={Object.keys(errors).length > 0}
-              >
-                Sign Up
-              </button>
-            )}
-          </section>
-          <section className="w-full flex justify-between items-center">
-            <p>
-              Registered already?
-              <Link to="/login" className="link link-primary text-lg ps-1">
-                Login Now
-              </Link>
-            </p>
-          </section>
-        </form>
-      </section>
+        <TextInput
+          placeholder="First Name"
+          register={register}
+          errors={errors}
+          name={"first_name"}
+          type={"text"}
+        />
+        <TextInput
+          placeholder="Last Name"
+          register={register}
+          errors={errors}
+          name={"last_name"}
+          type={"text"}
+        />
+        <TextInput
+          placeholder="Password"
+          register={register}
+          errors={errors}
+          name={"password"}
+          type={"password"}
+        />
+        <TextInput
+          placeholder="Re-Password"
+          register={register}
+          errors={errors}
+          name={"re_password"}
+          type={"password"}
+        />
+        {error && (
+          <div role="alert" className="alert alert-error">
+            <ul className="flex flex-col gap-2 list-disc py-1 px-6">
+              {error.map((err) => (
+                <li key={err}>{err}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+        <section className="flex justify-between items-center w-full">
+          {lodaing ? (
+            <button className="btn btn-disabled btn-outline btn-primary">
+              <span className="loading loading-spinner"></span>
+              loading
+            </button>
+          ) : (
+            <button
+              type="submit"
+              className="btn btn-outline btn-primary w-28"
+              onClick={() => setLoading(true)}
+              disabled={Object.keys(errors).length > 0}
+            >
+              Sign Up
+            </button>
+          )}
+        </section>
+        <section className="w-full flex justify-between items-center">
+          <p>
+            Registered already?
+            <Link to="/login" className="link link-primary text-lg ps-1">
+              Login Now
+            </Link>
+          </p>
+        </section>
+      </form>
+    </section>
   );
 };
 
