@@ -4,9 +4,9 @@ import NavBar from "../../Pages/NavBar";
 
 const LayOut = () => {
   return (
-    <section className="min-h-screen flex">
-      <NavBar className="columns-6" />
-      <Outlet className="columns-6" />
+    <section className="min-h-screen grid grid-cols-12">
+      <NavBar className="" />
+      <Outlet className="col-span-full"/>
     </section>
   );
 };

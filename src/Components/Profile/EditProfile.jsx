@@ -5,7 +5,8 @@ import * as yup from "yup";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import TextInput from "../../Components/TextInput/TextInput";
-const index = () => {
+import Container from "../Container";
+const EditProfile = () => {
   const navigate = useNavigate();
   const [lodaing, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -62,7 +63,7 @@ const index = () => {
   
   const onSubmit = (data) => signUp(data);
   return (
-    <section className="container min-h-screen mx-auto max-sm:px-4 py-5 flex justify-center items-center">
+    <Container customeStyle="mx-auto max-sm:px-4 py-5 flex justify-center items-center">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col items-center justify-center gap-4 sm:w-[75%] w-full"
@@ -123,8 +124,9 @@ const index = () => {
           </p>
         </section>
       </form>
-    </section>
+    </Container>
   );
 };
 
-export default index;
+
+export default EditProfile

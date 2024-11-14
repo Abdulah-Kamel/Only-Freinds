@@ -4,8 +4,8 @@ import ProfileActions from "./ProfileActions";
 
 const ProfileHeader = () => {
   return (
-    <header className="w-[90%] mx-auto max-md:w-full">
-      <section className="flex max-lg:flex-col justify-between items-center">
+    <header className="w-[95%] mx-auto max-md:w-full">
+      <section className="flex max-lg:flex-col">
         <UserInfo
           userImage="https://picsum.photos/150"
           userBio="Artist, Designer, Age 28"

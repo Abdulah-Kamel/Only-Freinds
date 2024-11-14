@@ -11,11 +11,15 @@ const UserInfo = ({ userImage, userName, userBio }) => {
   }, []);
   return (
     <section className="flex items-center max-lg:flex-col max-lg:text-center">
-      <img src={userImage} alt="profile image" className="rounded-full" />
-      <section className="ms-2">
-        <h3 className="font-bold text-2xl">{data?.username}</h3>
-        {/* <p className="text-gray-300">{userBio}</p> */}
-      </section>
+      <div className="avatar">
+        <div className="w-32 md:w-48 rounded-full">
+          <img src={userImage} />
+        </div>
+      </div>
+      {/* <section className="ms-2">
+        <h3 className="font-bold text-2xl">{data?.username} Test</h3>
+        <p className="">{userBio} Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt, labore!</p>
+      </section> */}
     </section>
   );
 };

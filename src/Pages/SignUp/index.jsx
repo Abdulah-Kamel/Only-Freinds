@@ -25,7 +25,6 @@ const index = () => {
       .catch((error) => {
         setLoading(false);
         const messages = Object.values(error.response.data).flat();
-        console.log(messages);
         setError(messages);
       });
   };

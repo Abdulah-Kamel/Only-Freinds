@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import SideBar from "./Pages/SideBar";
 import SignUp from "./Pages/SignUp";
@@ -13,6 +13,7 @@ import Profile from "./Pages/Profile";
 import ForgetPassword from "./Pages/Forget Password";
 import ResetPassowrd from "./Pages/Reset Passowrd";
 import UserContextProvider from "./Store/UserStore";
+import EditProfile from "./Components/Profile/EditProfile";
 
 function App() {
   const router = createBrowserRouter([
@@ -53,6 +54,14 @@ function App() {
           element: (
             <ProtectedRoute>
               <Profile />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/profile/edit",
+          element: (
+            <ProtectedRoute>
+              <EditProfile />
             </ProtectedRoute>
           ),
         },

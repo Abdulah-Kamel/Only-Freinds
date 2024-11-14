@@ -16,9 +16,22 @@ export default function UserContextProvider({ children }) {
     );
     return data;
   };
+  const getUserProfile = async() => {
+    const token = localStorage.getItem("token");
+    const data = await axios.get(
+      "https://mazag-production.up.railway.app/profiles/me/",
+      {
+        headers: {
+          Authorization: `JWT ${token}`,
+        },
+      }
+    );
+    return data;
+  };
+
 
   return (
-    <UserContext.Provider value={{ getUserData }}>
+    <UserContext.Provider value={{ getUserData,getUserProfile }}>
       {children}
     </UserContext.Provider>
   );
