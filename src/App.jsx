@@ -14,6 +14,7 @@ import ForgetPassword from "./Pages/Forget Password";
 import ResetPassowrd from "./Pages/Reset Passowrd";
 import UserContextProvider from "./Store/UserStore";
 import EditProfile from "./Components/Profile/EditProfile";
+import { themeChange } from 'theme-change'
 
 function App() {
   const router = createBrowserRouter([
@@ -100,7 +101,10 @@ function App() {
       ),
     },
   ]);
-
+  useEffect(() => {
+    themeChange(false)
+    // 👆 false parameter is required for react project
+  }, [])
   return (
     <UserContextProvider>
       <RouterProvider router={router} />
