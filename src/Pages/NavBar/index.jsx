@@ -4,13 +4,16 @@ import { IoNotificationsOutline } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
 import { FaPlus } from "react-icons/fa6";
 import { Link, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Switch } from "@headlessui/react";
+import { UserContext } from "../../Store/UserStore";
 
 const NavBar = () => {
   const location = useLocation();
   const [enabled, setEnabled] = useState(false);
   const { hash, pathname, search } = location;
+  const {isdark, setIsdark} = useContext(UserContext);
+
   const navItems = [
     { name: "Home", icon: GoHomeFill, path: "/" },
     { name: "Explore", icon: FaRegCompass, path: "/explore" },
@@ -22,21 +25,6 @@ const NavBar = () => {
     { name: "Create", icon: FaPlus, path: "/create" },
     { name: "Profile", icon: CgProfile, path: "/profile" },
   ];
-  const [isdark, setIsdark] = useState(() => {
-    // Retrieve saved theme from local storage or default to light
-    return JSON.parse(localStorage.getItem("isdark")) || false;
-  });
-
-  useEffect(() => {
-    // Update `data-theme` on `html` when `isdark` changes
-    document.documentElement.setAttribute(
-      "data-theme",
-      isdark ? "dark" : "light"
-    );
-    // Save theme in local storage
-    localStorage.setItem("isdark", JSON.stringify(isdark));
-  }, [isdark]);
-
   return (
     <nav className="bg-white dark:bg-[#191E24] lg:py-5 py-2 px-3 text-[#f5f5f5] lg:sticky lg:h-screen fixed lg:top-0 bottom-0 z-50 max-lg:w-full shadow-xl overflow-auto col-span-3">
       <div className="lg:block flex">

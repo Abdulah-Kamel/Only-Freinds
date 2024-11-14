@@ -1,10 +1,12 @@
 import { Switch } from "@headlessui/react";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../../Store/UserStore";
 
 const ProfileModal = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const {isdark, setIsdark} = useContext(UserContext);
 
   const logOut = () => {
     setLoading(true);
@@ -20,20 +22,6 @@ const ProfileModal = () => {
     document.getElementById("edit_profile_modal").showModal();
     document.getElementById("setting_modal").close();
   };
-  const [isdark, setIsdark] = useState(() => {
-    // Retrieve saved theme from local storage or default to light
-    return JSON.parse(localStorage.getItem("isdark")) || false;
-  });
-
-  useEffect(() => {
-    // Update `data-theme` on `html` when `isdark` changes
-    document.documentElement.setAttribute(
-      "data-theme",
-      isdark ? "dark" : "light"
-    );
-    // Save theme in local storage
-    localStorage.setItem("isdark", JSON.stringify(isdark));
-  }, [isdark]);
   return (
     <dialog
       id="setting_modal"

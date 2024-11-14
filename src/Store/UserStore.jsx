@@ -1,10 +1,24 @@
 import axios from "axios";
-import { createContext } from "react";
+import { createContext, useEffect, useState } from "react";
 
 export const UserContext = createContext();
 
 export default function UserContextProvider({ children }) {
-  const getUserData = async() => {
+  const [isdark, setIsdark] = useState(() => {
+    // Retrieve saved theme from local storage or default to light
+    return JSON.parse(localStorage.getItem("isdark")) || false;
+  });
+
+  useEffect(() => {
+    // Update `data-theme` on `html` when `isdark` changes
+    document.documentElement.setAttribute(
+      "data-theme",
+      isdark ? "dark" : "light"
+    );
+    // Save theme in local storage
+    localStorage.setItem("isdark", JSON.stringify(isdark));
+  }, [isdark]);
+  const getUserData = async () => {
     const token = localStorage.getItem("token");
     const data = await axios.get(
       "https://mazag-production.up.railway.app/users/me/",
@@ -16,7 +30,7 @@ export default function UserContextProvider({ children }) {
     );
     return data;
   };
-  const getUserProfile = async() => {
+  const getUserProfile = async () => {
     const token = localStorage.getItem("token");
     const data = await axios.get(
       "https://mazag-production.up.railway.app/profiles/me/",
@@ -29,9 +43,10 @@ export default function UserContextProvider({ children }) {
     return data;
   };
 
-
   return (
-    <UserContext.Provider value={{ getUserData,getUserProfile }}>
+    <UserContext.Provider
+      value={{ getUserData, getUserProfile, isdark, setIsdark }}
+    >
       {children}
     </UserContext.Provider>
   );
