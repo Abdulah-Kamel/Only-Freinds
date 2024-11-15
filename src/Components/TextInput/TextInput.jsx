@@ -1,10 +1,17 @@
 import React from "react";
 
-const TextInput = ({ placeholder, register, errors, name, type, icon }) => {
+const TextInput = ({
+  placeholder,
+  register,
+  errors,
+  name,
+  type,
+  icon,
+}) => {
   return (
     <section className="w-full">
       <label
-        className={`input input-bordered ${
+        className={`input input-bordered text-black dark:text-white/90 ${
           errors[name] ? "input-error" : ""
         } flex items-center gap-2`}
       >
@@ -14,6 +21,8 @@ const TextInput = ({ placeholder, register, errors, name, type, icon }) => {
           className="grow"
           placeholder={placeholder}
           {...register(name)}
+
+
         />
       </label>
       {errors[name] && (

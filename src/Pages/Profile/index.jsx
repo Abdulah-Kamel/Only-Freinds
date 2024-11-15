@@ -16,7 +16,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 const index = () => {
-  const { getUserProfile } = useContext(UserContext);
+  const { getUserProfile,baseUrl } = useContext(UserContext);
   const [userData, setUserData] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -72,7 +72,7 @@ const index = () => {
   return (
     <Container customeStyle={"py-12 px-8 max-sm:px-2"}>
       <section className="flex gap-12 max-md:flex-col max-md:gap-4 max-sm:items-center">
-        <Avatar userImage={"https://picsum.photos/500"} />
+        <Avatar  userData={userData} baseUrl={baseUrl}/>
         <section className="max-sm:w-full">
           <section className="flex items-start gap-8 max-sm:flex-col max-sm:items-center">
             <UserAbout userName={userData.username} userBio={userData?.bio} />
