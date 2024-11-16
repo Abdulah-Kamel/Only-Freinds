@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import "./App.css";
-import SideBar from "./Pages/SideBar";
 import SignUp from "./Pages/SignUp";
 import SignIn from "./Pages/SignIn";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -9,7 +8,8 @@ import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
 import PublicRoute from "./Components/PublicRoute/PublicRoute";
 import Home from "./Pages/Home";
 import Notifictions from "./Pages/Notifiction";
-import Profile from "./Pages/Profile";
+import MyProfile from "./Pages/MyProfile";
+import Profile from "./Pages/Profile/Index";
 import ForgetPassword from "./Pages/Forget Password";
 import ResetPassowrd from "./Pages/Reset Passowrd";
 import UserContextProvider from "./Store/UserStore";
@@ -51,7 +51,15 @@ function App() {
           ),
         },
         {
-          path: "/profile",
+          path: "/profile/me",
+          element: (
+            <ProtectedRoute>
+              <MyProfile />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: "/profile/:id",
           element: (
             <ProtectedRoute>
               <Profile />

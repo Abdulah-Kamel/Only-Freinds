@@ -1,71 +1,18 @@
-import React, { useContext, useEffect, useState } from "react";
+import  { useContext, useEffect, useState } from "react";
 import Container from "../../Components/Container";
-import ProfileHeader from "../../Components/Old_Profile/ProfileHeader";
-import About from "../../Components/Old_Profile/About";
 import ProfileGallery from "../../Components/Old_Profile/ProfileGallery";
-import { IoSettingsOutline } from "react-icons/io5";
-import { IoIosMore } from "react-icons/io";
 import Avatar from "../../Components/Profile/Avatar";
 import UserAbout from "../../Components/Profile/UserAbout";
 import UserActions from "../../Components/Profile/UserActions";
-import GalleryPhoto from "../../Components/Old_Profile/GalleryPhoto";
 import { UserContext } from "../../Store/UserStore";
-import axios from "axios";
-import * as yup from "yup";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-
 const index = () => {
   const { getUserProfile,baseUrl } = useContext(UserContext);
   const [userData, setUserData] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
 
   const handleUserData = async () => {
     const data = await getUserProfile().then((res) => setUserData(res.data));
   };
 
-  const editProfile = (data) => {
-    setLoading(true);
-    console.log(data);
-    axios
-      .post("https://mazag-production.up.railway.app/profiles/me/", {
-        ...data,
-      })
-      .then((res) => {
-        setLoading(false);
-        if (res.status === 200) {
-          localStorage.setItem("token", res.data.access);
-          localStorage.setItem("refresh", res.data.refresh);
-        }
-      })
-      .catch((error) => {
-        setLoading(false);
-        const messages = Object.values(error.response.data).flat();
-        setError(messages);
-      });
-  };
-  const schema = yup
-    .object({
-      username: yup.string().required("User name or Email is required"),
-      password: yup
-        .string()
-        .required("Password is required")
-        .matches(
-          /^[A-Z][a-zA-Z0-9!@#$%^&*()_+]{7,}$/,
-          "Password must start with an uppercase letter and be at least 8 characters long"
-        ),
-    })
-    .required();
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
-  const onSubmit = (data) => editProfile(data);
   useEffect(() => {
     handleUserData();
   }, []);

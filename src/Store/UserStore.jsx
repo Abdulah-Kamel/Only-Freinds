@@ -4,6 +4,7 @@ import { createContext, useEffect, useState } from "react";
 export const UserContext = createContext();
 
 export default function UserContextProvider({ children }) {
+  const token = localStorage.getItem("token");
   const [isdark, setIsdark] = useState(() => {
     // Retrieve saved theme from local storage or default to light
     return JSON.parse(localStorage.getItem("isdark")) || false;
@@ -19,7 +20,6 @@ export default function UserContextProvider({ children }) {
     localStorage.setItem("isdark", JSON.stringify(isdark));
   }, [isdark]);
   const getUserData = async () => {
-    const token = localStorage.getItem("token");
     const data = await axios.get(`${baseUrl}/users/me/`, {
       headers: {
         Authorization: `JWT ${token}`,
@@ -28,7 +28,6 @@ export default function UserContextProvider({ children }) {
     return data;
   };
   const getUserProfile = async () => {
-    const token = localStorage.getItem("token");
     const data = await axios.get(`${baseUrl}/profiles/me/`, {
       headers: {
         Authorization: `JWT ${token}`,
@@ -39,7 +38,6 @@ export default function UserContextProvider({ children }) {
   const editUserProfile = async (formData) => {
     console.log(formData);
 
-    const token = localStorage.getItem("token");
     const data = await axios.patch(`${baseUrl}/profiles/me/`, formData, {
       headers: {
         Authorization: `JWT ${token}`,
@@ -48,7 +46,24 @@ export default function UserContextProvider({ children }) {
     });
     return data;
   };
+  const getProfileById = async (id) => {
+    const data = await axios.get(`${baseUrl}/profiles/${id}`);
+    return data;
+  };
 
+  const getAllProfile = async () => {
+    const data = await axios.get(`${baseUrl}/profiles/`);
+    return data;
+  };
+
+  const followProfileById = async (id) => {
+    const data = await axios.post(`${baseUrl}/profiles/${id}/follow/`, {
+      headers: {
+        Authorization: `JWT ${token}`,
+      },
+    });
+    return data;
+  };
   return (
     <UserContext.Provider
       value={{
@@ -58,6 +73,9 @@ export default function UserContextProvider({ children }) {
         setIsdark,
         editUserProfile,
         baseUrl,
+        getProfileById,
+        followProfileById,
+        getAllProfile,
       }}
     >
       {children}

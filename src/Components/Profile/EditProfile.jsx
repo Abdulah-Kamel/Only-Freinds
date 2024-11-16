@@ -3,13 +3,10 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import clsx from "clsx";
-import { Link, useNavigate } from "react-router-dom";
-import TextInput from "../../Components/TextInput/TextInput";
 import Container from "../Container";
 import { UserContext } from "../../Store/UserStore";
 import { Input } from "@headlessui/react";
 const EditProfile = () => {
-  const navigate = useNavigate();
   const [lodaing, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [userData, setUserData] = useState(false);
