@@ -1,34 +1,40 @@
 import { IoIosArrowDown, IoIosMore } from "react-icons/io";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { UserContext } from "../../Store/UserStore";
 import ProfileModal from "../Profile/ProfileModal";
-const UserActions = ({ id }) => {
-  const { followProfileById } = useContext(UserContext);
+const UserActions = ({ id, userData }) => {
+  const { followProfileById, UnfollowProfileById } = useContext(UserContext);
   const handleFollow = async (id) => {
     const data = await followProfileById(id).then((res) => console.log(res));
   };
+  const handleUnFollow = async (id) => {
+    const data = await UnfollowProfileById(id).then((res) => console.log(res));
+  };
+  useEffect(() => {
+    console.log(userData);
+  }, [userData]);
   return (
     <section className="mt-1 flex items-center gap-4">
       {id ? (
-        <div className="dropdown">
+        userData?.is_following ? (
           <button
-            className="btn  btn-primary ps-10 pe-6 h-auto min-h-0 py-1 rounded-full text-lg group"
+            className="btn  btn-primary px-10 h-auto min-h-0 py-1 rounded-full text-lg"
+            onClick={() => {
+              handleUnFollow(id);
+            }}
+          >
+            UnFollow
+          </button>
+        ) : (
+          <button
+            className="btn  btn-primary px-10 h-auto min-h-0 py-1 rounded-full text-lg"
             onClick={() => {
               handleFollow(id);
             }}
           >
             Follow
-            <IoIosArrowDown className="opacity-0 group-hover:opacity-100 group-focus:opacity-100 transition-opacity" />
           </button>
-          <ul
-            tabIndex={0}
-            className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow-2xl"
-          >
-            <li>
-              <button>Unfollow</button>
-            </li>
-          </ul>
-        </div>
+        )
       ) : (
         <>
           <IoIosMore

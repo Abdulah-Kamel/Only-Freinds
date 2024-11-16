@@ -28,7 +28,7 @@ const index = () => {
         <section className="max-sm:w-full">
           <section className="flex items-start gap-8 max-sm:flex-col max-sm:items-center">
             <UserAbout userName={userData.username} userBio={userData?.bio} />
-            <UserActions id={id}/>
+            <UserActions id={id} userData={userData}/>
           </section>
           <section className="mt-10 md:mt-4 w-full">
             <ul className="flex gap-4 max-sm:flex-col max-sm:items-center">

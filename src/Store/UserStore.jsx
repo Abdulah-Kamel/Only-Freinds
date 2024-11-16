@@ -4,7 +4,6 @@ import { createContext, useEffect, useState } from "react";
 export const UserContext = createContext();
 
 export default function UserContextProvider({ children }) {
-  const token = localStorage.getItem("token");
   const [isdark, setIsdark] = useState(() => {
     // Retrieve saved theme from local storage or default to light
     return JSON.parse(localStorage.getItem("isdark")) || false;
@@ -20,6 +19,7 @@ export default function UserContextProvider({ children }) {
     localStorage.setItem("isdark", JSON.stringify(isdark));
   }, [isdark]);
   const getUserData = async () => {
+    const token = localStorage.getItem("token");
     const data = await axios.get(`${baseUrl}/users/me/`, {
       headers: {
         Authorization: `JWT ${token}`,
@@ -28,6 +28,7 @@ export default function UserContextProvider({ children }) {
     return data;
   };
   const getUserProfile = async () => {
+    const token = localStorage.getItem("token");
     const data = await axios.get(`${baseUrl}/profiles/me/`, {
       headers: {
         Authorization: `JWT ${token}`,
@@ -37,6 +38,7 @@ export default function UserContextProvider({ children }) {
   };
   const editUserProfile = async (formData) => {
     console.log(formData);
+    const token = localStorage.getItem("token");
 
     const data = await axios.patch(`${baseUrl}/profiles/me/`, formData, {
       headers: {
@@ -57,11 +59,30 @@ export default function UserContextProvider({ children }) {
   };
 
   const followProfileById = async (id) => {
-    const data = await axios.post(`${baseUrl}/profiles/${id}/follow/`, {
-      headers: {
-        Authorization: `JWT ${token}`,
-      },
-    });
+    const token = localStorage.getItem("token");
+
+    const data = await axios.post(
+      `${baseUrl}/profiles/${id}/follow/`,
+      {},
+      {
+        headers: {
+          Authorization: `JWT ${token}`,
+        },
+      }
+    );
+    return data;
+  };
+  const UnfollowProfileById = async (id) => {
+    const token = localStorage.getItem("token");
+    const data = await axios.delete(
+      `${baseUrl}/profiles/${id}/follow/`,
+      {},
+      {
+        headers: {
+          Authorization: `JWT ${token}`,
+        },
+      }
+    );
     return data;
   };
   return (
@@ -76,6 +97,7 @@ export default function UserContextProvider({ children }) {
         getProfileById,
         followProfileById,
         getAllProfile,
+        UnfollowProfileById,
       }}
     >
       {children}

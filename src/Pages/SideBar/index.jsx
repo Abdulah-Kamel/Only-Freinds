@@ -3,17 +3,27 @@ import { FaRegCompass } from "react-icons/fa";
 import { IoNotificationsOutline } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
 import { FaPlus } from "react-icons/fa6";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { Switch } from "@headlessui/react";
 import { UserContext } from "../../Store/UserStore";
 
 const SideBar = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const [enabled, setEnabled] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { hash, pathname, search } = location;
-  const {isdark, setIsdark} = useContext(UserContext);
-
+  const { isdark, setIsdark } = useContext(UserContext);
+  const logOut = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      localStorage.removeItem("token");
+      localStorage.removeItem("refresh");
+      navigate("/login");
+    }, 2000);
+  };
   const navItems = [
     { name: "Home", icon: GoHomeFill, path: "/" },
     { name: "Explore", icon: FaRegCompass, path: "/explore" },
@@ -74,6 +84,21 @@ const SideBar = () => {
                   className="pointer-events-none inline-block size-5 translate-x-0 rounded-full bg-white ring-0 shadow-lg transition duration-200 ease-in-out group-data-[checked]:translate-x-7"
                 />
               </Switch>
+            </li>
+            <li
+              className={`py-2 lg:ps-4 ps-2 pe-2 max-sm:w-1/5 hidden lg:flex justify-normal items-center gap-2 hover:bg-[#eaeaea] dark:hover:bg-[#272C33] rounded-lg transition-colors my-2
+                  `}
+              role="button"
+              onClick={logOut}
+            >
+              {loading ? (
+              <>
+                <span className="loading loading-spinner"></span>
+                loading
+              </>
+            ) : (
+              "Logout"
+            )}
             </li>
           </ul>
         </div>

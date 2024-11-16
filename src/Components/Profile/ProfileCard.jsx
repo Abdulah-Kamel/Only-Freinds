@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const ProfileCard = ({ data, me }) => {
   const avatarPlacholder =
     (data?.first_name?.slice(0, 1) || "") +
     (data?.last_name?.slice(0, 1) || "");
+  const [color, setColor] = useState("");
+  const randomHexColor = () => {
+    let n = (Math.random() * 0xfffff * 1000000).toString(16);
+    setColor("#" + n.slice(0, 6));
+  };
+  useEffect(() => {
+    randomHexColor();
+  }, []);
   return (
     <div className="card card-side bg-base-100flex items-center">
       {data?.profile_picture ? (
@@ -14,9 +22,12 @@ const ProfileCard = ({ data, me }) => {
         </div>
       ) : (
         <div className="avatar placeholder">
-          <div className="bg-primary text-neutral-content w-20 rounded-full">
+          <div
+            style={{ backgroundColor: color }}
+            className="text-neutral-content w-20 rounded-full"
+          >
             <span className="text-4xl text-black dark:text-white/90">
-              {data?.first_name?.slice(0, 1) + data?.last_name?.slice(0, 1)}
+              {avatarPlacholder}
             </span>
           </div>
         </div>
@@ -28,7 +39,7 @@ const ProfileCard = ({ data, me }) => {
         <p>{data?.first_name + " " + data?.last_name}</p>
         {!me ? (
           data?.is_following !== true && (
-            <button className="btn btn-primary h-auto min-h-0 py-1">
+            <button className="btn btn-accent h-auto min-h-0 py-1">
               Folow
             </button>
           )
