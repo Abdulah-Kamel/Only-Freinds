@@ -62,7 +62,10 @@ const index = () => {
     }
   }, [errors]);
   return (
-    <section className="container min-h-screen mx-auto max-sm:px-4 py-5 flex justify-center items-center">
+    <section className="container min-h-screen mx-auto max-sm:px-4 flex flex-col justify-center items-center">
+      <h1 className="text-3xl font-bold text-black dark:text-white/90 mb-4">
+        Sign In
+      </h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col items-center justify-center gap-4 sm:w-[75%] w-full"

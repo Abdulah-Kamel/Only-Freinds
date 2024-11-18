@@ -17,11 +17,6 @@ const ProfileModal = () => {
       navigate("/login");
     }, 2000);
   };
-
-  const toglleModals = () => {
-    document.getElementById("edit_profile_modal").showModal();
-    document.getElementById("setting_modal").close();
-  };
   return (
     <dialog
       id="setting_modal"
@@ -33,7 +28,6 @@ const ProfileModal = () => {
           <Link
             to={"/profile/edit"}
             className="btn join-item bg-inherit"
-            onClick={toglleModals}
           >
             Edit Profile
           </Link>

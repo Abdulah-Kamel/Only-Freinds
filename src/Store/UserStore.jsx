@@ -53,8 +53,10 @@ export default function UserContextProvider({ children }) {
     return data;
   };
 
-  const getAllProfile = async () => {
-    const data = await axios.get(`${baseUrl}/profiles/`);
+  const getAllProfile = async (page = 1, page_size) => {
+    const data = await axios.get(
+      `${baseUrl}/profiles/?page=${page}&page_size=${page_size}`
+    );
     return data;
   };
 

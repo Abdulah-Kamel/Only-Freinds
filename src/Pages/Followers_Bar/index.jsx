@@ -6,22 +6,27 @@ import ProfileCard from "../../Components/Profile/ProfileCard";
 const index = () => {
   const { pathname } = useLocation();
   const [data, setData] = useState({});
+  const [loading, setLoading] = useState(true);
   const [profileData, setProfileData] = useState([]);
   const { getUserData, getAllProfile } = useContext(UserContext);
   const avatarPlacholder =
     (data?.first_name?.slice(0, 1) || "") +
     (data?.last_name?.slice(0, 1) || "");
   const handleUserData = async () => {
-    const data = await getUserData().then((res) => setData(res.data));
+    const data = await getUserData().then(function (res) {
+      setData(res.data);      
+      setLoading(false);
+    });
   };
-  const handleProfilesData = async () => {
-    const data = await getAllProfile().then((res) =>
-      setProfileData(res.data.results)
-    );
+  const handleProfilesData = async (page, page_size) => {
+    const data = await getAllProfile(page, page_size).then(function (res) {
+      setProfileData(res.data.results);
+      setLoading(false);
+    });
   };
   useEffect(() => {
     handleUserData();
-    handleProfilesData();
+    handleProfilesData(1, 5);
   }, []);
   return (
     <section
@@ -30,7 +35,7 @@ const index = () => {
       } max-lg:hidden`}
     >
       <section>
-        <ProfileCard data={data} me={true} />
+        <ProfileCard data={data} me={true} loading={loading} />
       </section>
       <section className="mt-2">
         <section className="flex justify-between">
@@ -46,7 +51,7 @@ const index = () => {
           {profileData
             ?.filter((item) => item?.id !== data?.id)
             .map((item) => (
-              <ProfileCard key={item.id} data={item} />
+              <ProfileCard key={item.id} data={item} loading={loading} />
             ))}
         </section>
       </section>

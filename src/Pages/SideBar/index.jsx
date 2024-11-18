@@ -86,7 +86,7 @@ const SideBar = () => {
               </Switch>
             </li>
             <li
-              className={`py-2 lg:ps-4 ps-2 pe-2 max-sm:w-1/5 hidden lg:flex justify-normal items-center gap-2 hover:bg-[#eaeaea] dark:hover:bg-[#272C33] rounded-lg transition-colors my-2
+              className={`py-2 lg:ps-4 ps-2 pe-2 max-sm:w-1/5 hidden lg:flex justify-normal items-center gap-2 hover:bg-[#eaeaea] dark:hover:bg-[#272C33] rounded-lg transition-colors my-2 text-black dark:text-white/90
                   `}
               role="button"
               onClick={logOut}

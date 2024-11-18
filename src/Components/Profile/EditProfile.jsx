@@ -16,7 +16,7 @@ const EditProfile = () => {
   const handleUserData = async () => {
     try {
       const res = await getUserData();
-      setUserData(res.data);
+      setUserData(res.data);      
       // Set default values in the form based on fetched data
       setValue("first_name", res.data.first_name);
       setValue("last_name", res.data.last_name);

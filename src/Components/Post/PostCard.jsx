@@ -1,12 +1,44 @@
-import React from "react";
-import { BsEmojiSmile, BsSend } from "react-icons/bs";
-import { CiBookmark } from "react-icons/ci";
-import { FaRegComment } from "react-icons/fa";
-import { GoHeart } from "react-icons/go";
+import { Input } from "@headlessui/react";
+import React, { useEffect, useRef, useState } from "react";
+import { BsEmojiSmile } from "react-icons/bs";
+import PostActions from "./PostActions";
+import EmojiPicker, { Emoji } from "emoji-picker-react";
 
 const PostCard = () => {
+  const [showPicker, setShowPicker] = useState(false);
+  const [inputStr, setInputStr] = useState("");
+  const pickerRef = useRef(null); // Reference for the emoji picker container
+  const [theme, setTheme] = useState("light");
+  const isdark = localStorage.getItem("isdark");
+  const toggleTheme = () => {
+    if (isdark === "true") {
+      setTheme("dark");
+    } else {
+      setTheme("light");
+    }
+  };
+  const onEmojiClick = (emojiObject) => {
+    setInputStr((prevInput) => prevInput + emojiObject.emoji);
+    // setShowPicker(false);
+  };
+  // Close the picker when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (pickerRef.current && !pickerRef.current.contains(event.target)) {
+        setShowPicker(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+  useEffect(() => {
+    toggleTheme();
+  }, [isdark]);
   return (
-    <section className="columns-auto border-b-[1px] border-[#f5f5f5] py-2">
+    <section className="columns-auto first:border-t-0 last:border-b-0 border-y-[1px] last:border-t-[1px] border-gray-500 py-4 relative">
       <section className="mb-4">
         <section href="#" className="flex items-center">
           <img
@@ -26,42 +58,36 @@ const PostCard = () => {
           className="w-full rounded-lg"
         />
       </section>
-      <section className="flex flex-1 justify-between items-center mt-4">
-        
-        <section
-          href="#"
-          className="flex  text-[#f5f5f5] hover:text-gray-400 transition-colors hover:cursor-pointer px-4"
-        >
-          <GoHeart className="text-3xl me-1" />
+      <PostActions theme={theme} />
+      <section className="flex flex-col">
+        {showPicker && (
+          <section
+            className="absolute bottom-[calc(0%+80px)] left-0 w-full"
+            ref={pickerRef}
+          >
+            <EmojiPicker
+              height="400px"
+              width="100%"
+              onEmojiClick={onEmojiClick}
+              theme={theme}
+            />
+          </section>
+        )}
+        <section className="flex justify-between items-center mt-4 relative">
+          <Input
+            type="text"
+            name="comment"
+            placeholder="Add a comment"
+            className={`input input-bordered text-black dark:text-white/90 w-full`}
+            value={inputStr} // Use value instead of defaultValue
+            onChange={(e) => setInputStr(e.target.value)}
+            // className="w-full px-4 py-2 bg-transparent border-none outline-none text-stone-100 placeholder:text-stone-400"
+          />
+          <BsEmojiSmile
+            className="text-xl absolute right-[calc(0%+10px)] ] cursor-pointer"
+            onClick={() => setShowPicker((val) => !val)}
+          />
         </section>
-        <section
-          href="#"
-          className="flex text-[#f5f5f5] hover:text-gray-400 transition-colors hover:cursor-pointer px-4"
-        >
-          <FaRegComment className="text-3xl me-1" />
-        </section>
-        <section
-          href="#"
-          className="flex text-[#f5f5f5] hover:text-gray-400 transition-colors hover:cursor-pointer px-4"
-        >
-          <BsSend className="text-3xl me-1" />
-        </section>
-        <section
-          href="#"
-          className="flex text-[#f5f5f5] hover:text-gray-400 transition-colors hover:cursor-pointer px-4"
-        >
-          <CiBookmark className="text-3xl me-1" />
-        </section>
-      </section>
-     
-      <section className="flex justify-between items-center mt-4 relative">
-        <input
-          type="text"
-          name="comment"
-          placeholder="Add a comment"
-          className="w-full px-4 py-2 bg-transparent border-none outline-none text-stone-100 placeholder:text-stone-400"
-        />
-        <BsEmojiSmile className="text-xl absolute right-0 cursor-pointer" />
       </section>
     </section>
   );
