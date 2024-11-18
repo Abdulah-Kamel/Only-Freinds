@@ -11,7 +11,6 @@ const UserActions = ({ id, userData }) => {
     const data = await UnfollowProfileById(id).then((res) => console.log(res));
   };
   useEffect(() => {
-    console.log(userData);
   }, [userData]);
   return (
     <section className="mt-1 flex items-center gap-4">

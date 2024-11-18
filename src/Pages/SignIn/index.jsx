@@ -12,7 +12,6 @@ const index = () => {
 
   const signUp = (data) => {
     setLoading(true);
-    console.log(data);
     axios
       .post("https://mazag-production.up.railway.app/auth/jwt/create", {
         ...data,
@@ -24,12 +23,11 @@ const index = () => {
           localStorage.setItem("refresh", res.data.refresh);
           navigate("/");
         }
-        console.log(res);
       })
       .catch((error) => {
         setLoading(false);
         const messages = Object.values(error.response.data).flat();
-        console.log(messages);
+        messages;
         setError(messages);
       });
   };

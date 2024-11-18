@@ -14,20 +14,20 @@ const index = () => {
     (data?.last_name?.slice(0, 1) || "");
   const handleUserData = async () => {
     const data = await getUserData().then(function (res) {
-      setData(res.data);      
+      setData(res?.data);
       setLoading(false);
     });
   };
   const handleProfilesData = async (page, page_size) => {
     const data = await getAllProfile(page, page_size).then(function (res) {
-      setProfileData(res.data.results);
+      setProfileData(res?.data?.results);
       setLoading(false);
     });
   };
   useEffect(() => {
     handleUserData();
     handleProfilesData(1, 5);
-  }, []);
+  }, [data, profileData]);
   return (
     <section
       className={`col-span-3 shadow-xl py-6 px-4 h-fit ${

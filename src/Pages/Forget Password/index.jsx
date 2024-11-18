@@ -9,7 +9,6 @@ const index = () => {
   const navigate = useNavigate();
   const [lodaing, setLoading] = useState(false);
   const handleForgetPassword = (data) => {
-    console.log(data);
     axios
       .post(
         "https://mazag-production.up.railway.app/users/reset_password_confirm/",
@@ -24,11 +23,9 @@ const index = () => {
           localStorage.setItem("refresh", res.data.refresh);
           navigate("/");
         }
-        console.log(res);
       })
       .catch((err) => {
         setLoading(false);
-        console.log(err);
       });
   };
   const schema = yup

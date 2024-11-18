@@ -13,7 +13,6 @@ const UpdateProfile = ({ userData }) => {
 
   const editProfile = (data) => {
     setLoading(true);
-    console.log(data);
     axios
       .post("https://mazag-production.up.railway.app/profiles/me/", {
         ...data,
@@ -24,12 +23,10 @@ const UpdateProfile = ({ userData }) => {
           localStorage.setItem("token", res.data.access);
           localStorage.setItem("refresh", res.data.refresh);
         }
-        console.log(res);
       })
       .catch((error) => {
         setLoading(false);
         const messages = Object.values(error.response.data).flat();
-        console.log(messages);
         setError(messages);
       });
   };

@@ -4,6 +4,8 @@ import { createContext, useEffect, useState } from "react";
 export const UserContext = createContext();
 
 export default function UserContextProvider({ children }) {
+  const [token, setToken] = useState(() => localStorage.getItem("token"));
+
   const [isdark, setIsdark] = useState(() => {
     // Retrieve saved theme from local storage or default to light
     return JSON.parse(localStorage.getItem("isdark")) || false;
@@ -19,7 +21,7 @@ export default function UserContextProvider({ children }) {
     localStorage.setItem("isdark", JSON.stringify(isdark));
   }, [isdark]);
   const getUserData = async () => {
-    const token = localStorage.getItem("token");
+    setToken(localStorage.getItem("token"));
     const data = await axios.get(`${baseUrl}/users/me/`, {
       headers: {
         Authorization: `JWT ${token}`,
@@ -28,7 +30,8 @@ export default function UserContextProvider({ children }) {
     return data;
   };
   const getUserProfile = async () => {
-    const token = localStorage.getItem("token");
+    setToken(localStorage.getItem("token"));
+
     const data = await axios.get(`${baseUrl}/profiles/me/`, {
       headers: {
         Authorization: `JWT ${token}`,
@@ -37,8 +40,7 @@ export default function UserContextProvider({ children }) {
     return data;
   };
   const editUserProfile = async (formData) => {
-    console.log(formData);
-    const token = localStorage.getItem("token");
+    setToken(localStorage.getItem("token"));
 
     const data = await axios.patch(`${baseUrl}/profiles/me/`, formData, {
       headers: {
@@ -54,6 +56,8 @@ export default function UserContextProvider({ children }) {
   };
 
   const getAllProfile = async (page = 1, page_size) => {
+    setToken(localStorage.getItem("token"));
+
     const data = await axios.get(
       `${baseUrl}/profiles/?page=${page}&page_size=${page_size}`
     );
@@ -61,7 +65,7 @@ export default function UserContextProvider({ children }) {
   };
 
   const followProfileById = async (id) => {
-    const token = localStorage.getItem("token");
+    setToken(localStorage.getItem("token"));
 
     const data = await axios.post(
       `${baseUrl}/profiles/${id}/follow/`,
@@ -75,7 +79,8 @@ export default function UserContextProvider({ children }) {
     return data;
   };
   const UnfollowProfileById = async (id) => {
-    const token = localStorage.getItem("token");
+    setToken(localStorage.getItem("token"));
+
     const data = await axios.delete(
       `${baseUrl}/profiles/${id}/follow/`,
       {},
@@ -87,6 +92,45 @@ export default function UserContextProvider({ children }) {
     );
     return data;
   };
+  const validateToken = async () => {
+    setToken(localStorage.getItem("token"));
+
+    try {
+      await axios.post(`${baseUrl}/auth/jwt/verify/`, { token });
+      return true;
+    } catch (err) {
+      if (err.response?.status === 401) {
+        return await refreshToken();
+      }
+      return false;
+    }
+  };
+  const refreshToken = async () => {
+    setToken(localStorage.getItem("token"));
+
+    try {
+      const refresh = localStorage.getItem("refresh");
+      const response = await axios.post(`${baseUrl}/auth/jwt/refresh/`, {
+        refresh,
+      });
+      if (response.status === 200) {
+        const newToken = response.data.access;
+        setToken(newToken);
+        localStorage.setItem("token", newToken);
+        return true;
+      }
+    } catch (err) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("refresh");
+      setToken(null);
+      window.location.href = "/login";
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    validateToken();
+  }, [token]);
   return (
     <UserContext.Provider
       value={{

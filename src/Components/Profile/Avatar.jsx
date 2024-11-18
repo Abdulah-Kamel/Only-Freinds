@@ -14,7 +14,6 @@ const Avatar = ({ userData, baseUrl }) => {
   /******  d2a8dc1b-f76d-4595-b096-ab8b145f705b  *******/
   useEffect(() => {
     randomHexColor();
-    console.log(userData);
   }, []);
   return (
     <>

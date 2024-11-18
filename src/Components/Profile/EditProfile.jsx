@@ -41,7 +41,6 @@ const EditProfile = () => {
       const token = localStorage.getItem("token");
       const response = await editUserProfile(formData, token);
       setLoading(false);
-      console.log(response);
     } catch (err) {
       setLoading(false);
       console.error(err);
