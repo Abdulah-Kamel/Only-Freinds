@@ -22,15 +22,8 @@ const ProfileHeader = () => {
     const token = localStorage.getItem("token");
     const { user_id } = jwtDecode(token);
     console.log(user_id == id);
-    if (user_id == id) {
+    if (user_id == id || id == "me") {
       setIsUser(true);
-    }
-    if (id === "me") {
-      setIsUser(true);
-    } else {
-      setIsUser(false);
-      navigate("*");
-      return;
     }
     const profileData = await getProfileById(id)
       .then(function (res) {

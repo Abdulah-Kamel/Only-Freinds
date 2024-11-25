@@ -15,6 +15,8 @@ import UserContextProvider from "./Store/UserStore";
 import EditProfile from "./Features/Profile/EditProfile";
 import { themeChange } from "theme-change";
 import { jwtDecode } from "jwt-decode";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
 
 const token = localStorage.getItem("token");
 const { user_id } = jwtDecode(token);
@@ -111,14 +113,18 @@ export const router = createBrowserRouter([
   },
 ]);
 function App() {
+const queryClient = new QueryClient();
+
   useEffect(() => {
     themeChange(false);
     // 👆 false parameter is required for react project
   }, []);
   return (
-    <UserContextProvider>
-      <RouterProvider router={router} />
-    </UserContextProvider>
+    <QueryClientProvider client={queryClient}>
+      <UserContextProvider>
+        <RouterProvider router={router} />
+      </UserContextProvider>
+    </QueryClientProvider>
   );
 }
 
