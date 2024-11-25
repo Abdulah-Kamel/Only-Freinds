@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Avatar from "./Avatar";
+import { UserContext } from "../Store/UserStore";
 
 const ProfileCard = ({ data, me, loading }) => {
+  const { logOut } = useContext(UserContext);
+  const [logOutLoading, setLogOutLoading] = useState(false);
   const avatarPlacholder =
     (data?.first_name?.slice(0, 1) || "") +
     (data?.last_name?.slice(0, 1) || "");
@@ -10,6 +14,13 @@ const ProfileCard = ({ data, me, loading }) => {
     let n = (Math.random() * 0xfffff * 1000000).toString(16);
     setColor("#" + n.slice(0, 6));
   };
+  const handleLogOut = () => {
+    setLogOutLoading(true);
+    setTimeout(() => {
+      setLogOutLoading(false);
+      logOut();
+    }, 2000);
+  };
   useEffect(() => {
     randomHexColor();
   }, []);
@@ -17,24 +28,12 @@ const ProfileCard = ({ data, me, loading }) => {
     <div className="card card-side bg-base-100flex items-center">
       {!loading && (
         <>
-          {data?.profile_picture ? (
-            <div className="avatar">
-              <div className="w-14 rounded-full">
-                <img src={data?.profile_picture} alt="profile picture" />
-              </div>
-            </div>
-          ) : (
-            <div className="avatar placeholder">
-              <div
-                style={{ backgroundColor: color }}
-                className="text-neutral-content w-14 rounded-full"
-              >
-                <span className="text-2xl text-black dark:text-white/90">
-                  {avatarPlacholder}
-                </span>
-              </div>
-            </div>
-          )}
+          <Avatar
+            // profile_picture={data?.profile_picture}
+            size="w-14"
+            first_name={data?.first_name}
+            last_name={data?.last_name}
+          />
           <div className="card-body p-2 flex">
             <Link
               to={`/profile/${data?.id}`}
@@ -50,8 +49,19 @@ const ProfileCard = ({ data, me, loading }) => {
                 </button>
               )
             ) : (
-              <button className="btn btn-primary h-auto min-h-0 py-1">
-                LogOut
+              <button
+                className="btn btn-primary h-auto min-h-0 py-1"
+                onClick={handleLogOut}
+                disabled={logOutLoading}
+              >
+                {logOutLoading ? (
+                  <>
+                    <span className="loading loading-spinner"></span>
+                    loading
+                  </>
+                ) : (
+                  "Log out"
+                )}
               </button>
             )}
           </div>

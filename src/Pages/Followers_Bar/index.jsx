@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../Store/UserStore";
 import { Link, useLocation } from "react-router-dom";
-import ProfileCard from "../../Components/Profile/ProfileCard";
+import ProfileCard from "../../Components/ProfileCard";
 
 const index = () => {
   const { pathname } = useLocation();

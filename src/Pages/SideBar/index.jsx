@@ -14,14 +14,12 @@ const SideBar = () => {
   const [enabled, setEnabled] = useState(false);
   const [loading, setLoading] = useState(false);
   const { hash, pathname, search } = location;
-  const { isdark, setIsdark } = useContext(UserContext);
-  const logOut = () => {
+  const { isdark, setIsdark, logOut } = useContext(UserContext);
+  const handleLogOut = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      localStorage.removeItem("token");
-      localStorage.removeItem("refresh");
-      navigate("/login");
+      logOut();
     }, 2000);
   };
   const navItems = [
@@ -89,7 +87,7 @@ const SideBar = () => {
               className={`py-2 lg:ps-4 ps-2 pe-2 max-sm:w-1/5 hidden lg:flex justify-normal items-center gap-2 hover:bg-[#eaeaea] dark:hover:bg-[#272C33] rounded-lg transition-colors my-2 text-black dark:text-white/90
                   `}
               role="button"
-              onClick={logOut}
+              onClick={handleLogOut}
             >
               {loading ? (
               <>

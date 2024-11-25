@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
+import { router } from "../App";
 
 export const UserContext = createContext();
 
@@ -51,7 +52,13 @@ export default function UserContextProvider({ children }) {
     return data;
   };
   const getProfileById = async (id) => {
-    const data = await axios.get(`${baseUrl}/profiles/${id}`);
+    setToken(localStorage.getItem("token"));
+    const data = await axios.get(`${baseUrl}/profiles/${id}`, {
+      headers: {
+        Authorization: `JWT ${token}`,
+      },
+    });
+    console.log(data);
     return data;
   };
 
@@ -81,15 +88,13 @@ export default function UserContextProvider({ children }) {
   const UnfollowProfileById = async (id) => {
     setToken(localStorage.getItem("token"));
 
-    const data = await axios.delete(
-      `${baseUrl}/profiles/${id}/follow/`,
-      {},
-      {
-        headers: {
-          Authorization: `JWT ${token}`,
-        },
-      }
-    );
+    const data = await axios.delete(`${baseUrl}/profiles/${id}/follow/`, {
+      headers: {
+        Authorization: `JWT ${token}`,
+      },
+    });
+    console.log(data);
+
     return data;
   };
   const validateToken = async () => {
@@ -127,6 +132,11 @@ export default function UserContextProvider({ children }) {
       return false;
     }
   };
+  const logOut = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("refresh");
+    router.navigate("/login");
+  };
 
   useEffect(() => {
     validateToken();
@@ -144,6 +154,7 @@ export default function UserContextProvider({ children }) {
         followProfileById,
         getAllProfile,
         UnfollowProfileById,
+        logOut,
       }}
     >
       {children}
