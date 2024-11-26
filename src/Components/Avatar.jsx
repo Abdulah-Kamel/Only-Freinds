@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const Avatar = ({ first_name, last_name, profile_picture, size }) => {
+const Avatar = ({ first_name, last_name, profile_picture, size,style }) => {
   const avatarPlacholder =
     (first_name?.slice(0, 1) || "") + (last_name?.slice(0, 1) || "");
   const [color, setColor] = useState("");
@@ -13,7 +13,7 @@ const Avatar = ({ first_name, last_name, profile_picture, size }) => {
   }, []);
   return (
     <>
-      <div className={`avatar ${!profile_picture && "placeholder"}`}>
+      <div className={`avatar ${!profile_picture && "placeholder"} ${style}`}>
         <div className={`${size} rounded-full bg-secondary dark:bg-accent`}>
           {profile_picture ? (
             <img src={profile_picture} alt="profile picture" />

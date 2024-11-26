@@ -39,7 +39,7 @@ const UserActions = ({ id, userData, isUser, setIsFollowing, isFollowing }) => {
   useEffect(() => {
   }, [isFollowing]);
   return (
-    <section className="mt-1 flex items-center gap-4">
+    <section className="flex gap-4">
       {!isUser ? (
         userData?.is_following ? (
           <button

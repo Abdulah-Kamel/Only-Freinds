@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import Avatar from "../../Components/Avatar";
-import UserAbout from "./UserAbout";
 import UserActions from "./UserActions";
 import { UserContext } from "../../Store/UserStore";
 import { useNavigate, useParams } from "react-router-dom";
@@ -16,41 +15,55 @@ const ProfileHeader = () => {
   const [isUser, setIsUser] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
   const [loading, setLoading] = useState(true);
-  const handleProfileData = async (id) => {
-    console.log(id);
+  const [isBioExpanded, setIsBioExpanded] = useState(false);
+  const [truncatedBio, setTruncatedBio] = useState("");
 
+  const handleProfileData = async (id) => {
     const token = localStorage.getItem("token");
     const { user_id } = jwtDecode(token);
-    console.log(user_id == id);
+
     if (user_id == id || id == "me") {
       setIsUser(true);
     }
-    const profileData = await getProfileById(id)
-      .then(function (res) {
-        setUserData(res.data);
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching profile data:", error);
-      });
+
+    try {
+      const res = await getProfileById(id);
+      setUserData(res.data);
+      setLoading(false);
+
+      // Truncate bio to 20 words or add custom logic
+      if (res.data?.bio) {
+        const words = res.data.bio.split(" ");
+        if (words.length > 5) {
+          setTruncatedBio(words.slice(0, 5).join(" ") + "...");
+        } else {
+          setTruncatedBio(res.data.bio);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching profile data:", error);
+    }
   };
 
   useEffect(() => {
     handleProfileData(id);
-  }, [userData]);
+  }, [id]);
+
   return (
     <>
       {!loading ? (
-        <section className="flex gap-12 max-md:flex-col max-md:gap-4 max-sm:items-center">
+        <section className="flex max-sm:flex-col max-sm:items-center gap-4 w-[80%] max-sm:w-full">
           <Avatar
             first_name={userData?.first_name}
             last_name={userData?.last_name}
-            // profile_picture={"https://picsum.photos/200"}
-            size={"w-32 md:w-36"}
+            size={"w-full"}
+            style="w-24 h-24"
           />
-          <section className="max-sm:w-full">
-            <section className="flex items-start gap-8 max-sm:flex-col items-center">
-              <UserAbout userName={userData.username} userBio={userData?.bio} />
+          <section className="flex flex-col max-sm:items-center max-sm:w-full">
+            <section className="flex gap-4">
+              <h3 className="font-bold text-2xl dark:text-white/90">
+                {userData?.username}
+              </h3>
               <UserActions
                 id={id}
                 isUser={isUser}
@@ -59,12 +72,26 @@ const ProfileHeader = () => {
                 isFollowing={isFollowing}
               />
             </section>
-            <section className="mt-10 md:mt-4 w-full">
-              <ProfileStats
-                followers_count={userData?.followers_count}
-                following_count={userData?.following_count}
-              />
-            </section>
+            <p className="break-words">
+              {isBioExpanded ? (
+                <span>{userData?.bio}</span>
+              ) : (
+                <span>{truncatedBio}</span>
+              )}
+              {userData?.bio?.split(" ").length > 5 && (
+                <span
+                  className={`text-stone-600 dark:text-white/90 cursor-pointer ml-1`}
+                  onClick={() => setIsBioExpanded((prev) => !prev)}
+                >
+                  {isBioExpanded ? "Show less" : "Show more"}
+                </span>
+              )}
+            </p>
+            <ProfileStats
+              followers_count={userData?.followers_count}
+              following_count={userData?.following_count}
+              style="col-start-3 max-md:col-start-1 max-sm:col-span-full"
+            />
           </section>
         </section>
       ) : (

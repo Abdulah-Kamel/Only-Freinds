@@ -19,7 +19,9 @@ const index = () => {
       .then((res) => {
         setLoading(false);
         if (res.status === 201) {
-          navigate("/login");
+          localStorage.setItem("token", res.data.access);
+          localStorage.setItem("refresh", res.data.refresh);
+          navigate("/");
         }
       })
       .catch((error) => {
@@ -41,7 +43,7 @@ const index = () => {
       email: yup.string().email("Invalid email").required("Email is required"),
       first_name: yup.string().required("First name is required"),
       last_name: yup.string().required("Last name is required"),
-      re_password: yup
+      password2: yup
         .string()
         .required("Please confirm your password")
         .oneOf([yup.ref("password")], "Passwords must match"),
@@ -110,7 +112,7 @@ const index = () => {
           placeholder="Re-Password"
           register={register}
           errors={errors}
-          name={"re_password"}
+          name={"password2"}
           type={"password"}
         />
         {error && (

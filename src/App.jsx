@@ -18,8 +18,7 @@ import { jwtDecode } from "jwt-decode";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 
-const token = localStorage.getItem("token");
-const { user_id } = jwtDecode(token);
+
 export const router = createBrowserRouter([
   {
     path: "/",

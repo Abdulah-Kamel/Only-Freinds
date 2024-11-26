@@ -1,27 +1,38 @@
-import { Input } from "@headlessui/react";
+import { Textarea } from "@headlessui/react";
 import React, { useEffect, useRef, useState } from "react";
 import { BsEmojiSmile } from "react-icons/bs";
 import PostActions from "./PostActions";
-import EmojiPicker, { Emoji } from "emoji-picker-react";
+import EmojiPicker from "emoji-picker-react";
+import { IoMdMore } from "react-icons/io";
+import { IoSendOutline } from "react-icons/io5";
 
 const PostCard = () => {
   const [showPicker, setShowPicker] = useState(false);
   const [inputStr, setInputStr] = useState("");
-  const pickerRef = useRef(null); // Reference for the emoji picker container
   const [theme, setTheme] = useState("light");
-  const isdark = localStorage.getItem("isdark");
+  const isdark = document.getElementsByName("body");
+  const textareaRef = useRef(null); // Reference for the textarea
+  const pickerRef = useRef(null); // Reference for the emoji picker container
+
   const toggleTheme = () => {
-    if (isdark === "true") {
-      setTheme("dark");
-    } else {
-      setTheme("light");
-    }
+    setTheme(isdark == true ? "dark" : "light");
   };
+
   const onEmojiClick = (emojiObject) => {
     setInputStr((prevInput) => prevInput + emojiObject.emoji);
-    // setShowPicker(false);
   };
-  // Close the picker when clicking outside
+
+  const handleInputChange = (e) => {
+    setInputStr(e.target.value);
+
+    // Dynamically adjust the height of the textarea
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto"; // Reset height to calculate new size
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // Set to scrollHeight
+    }
+  };
+
+  // Close the emoji picker when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (pickerRef.current && !pickerRef.current.contains(event.target)) {
@@ -34,33 +45,45 @@ const PostCard = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
   useEffect(() => {
     toggleTheme();
   }, [isdark]);
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  }, [inputStr]);
+
   return (
-    <section className="columns-auto first:border-t-0 last:border-b-0 border-y-[1px] last:border-t-[1px] border-gray-500 py-4 relative">
-      <section className="mb-4">
-        <section href="#" className="flex items-center">
-          <img
-            src="https://picsum.photos/50"
-            alt=""
-            className="rounded-full w-[50px]"
-          />
-          <section className="ms-2">
-            <p>southern_circle</p>
+    <section className="columns-auto w-[90%] relative rounded-3xl border border-base-300">
+      <section className="mb-4 border-b border-base-300 p-4">
+        <section className="flex justify-between items-center">
+          <section className="flex items-center">
+            <img
+              src="https://picsum.photos/50"
+              alt=""
+              className="rounded-full w-[50px]"
+            />
+            <section className="ms-2">
+              <p>southern_circle</p>
+            </section>
           </section>
+          <IoMdMore size={30} role="button" />
         </section>
       </section>
-      <section>
+      <section className="p-4">
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit...more</p>
         <img
-          src="https://picsum.photos/400"
+          src="https://picsum.photos/200"
           alt="dummy"
-          className="w-full rounded-lg"
+          className="w-full h-96 rounded-lg mt-4"
         />
       </section>
-      <PostActions theme={theme} />
-      <section className="flex flex-col">
-        {showPicker && (
+      <PostActions theme={theme} style="p-4 border-t border-base-300" />
+        {/* {showPicker ? (
           <section
             className="absolute bottom-[calc(0%+80px)] left-0 w-full"
             ref={pickerRef}
@@ -70,25 +93,27 @@ const PostCard = () => {
               width="100%"
               onEmojiClick={onEmojiClick}
               theme={theme}
+              autoFocusSearch={false}
+              lazyLoadEmojis
             />
           </section>
-        )}
+        ):null}
         <section className="flex justify-between items-center mt-4 relative">
-          <Input
-            type="text"
+          <Textarea
+            ref={textareaRef} // Attach reference to textarea
             name="comment"
             placeholder="Add a comment"
-            className={`input input-bordered text-black dark:text-white/90 w-full`}
-            value={inputStr} // Use value instead of defaultValue
-            onChange={(e) => setInputStr(e.target.value)}
-            // className="w-full px-4 py-2 bg-transparent border-none outline-none text-stone-100 placeholder:text-stone-400"
+            className={`input input-bordered text-black dark:text-white/90 w-full pe-16 pt-3 resize-none`} // Prevent manual resizing
+            value={inputStr}
+            onChange={handleInputChange}
+            maxLength={100}
           />
           <BsEmojiSmile
-            className="text-xl absolute right-[calc(0%+10px)] ] cursor-pointer"
+            className="text-xl absolute right-[calc(0%+40px)] bottom-[calc(0%+18px)] cursor-pointer"
             onClick={() => setShowPicker((val) => !val)}
           />
-        </section>
-      </section>
+          <IoSendOutline className="text-xl absolute right-[calc(0%+10px)] bottom-[calc(0%+18px)] cursor-pointer" />
+        </section> */}
     </section>
   );
 };
