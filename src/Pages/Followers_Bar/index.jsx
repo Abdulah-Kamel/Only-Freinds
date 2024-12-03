@@ -30,7 +30,7 @@ const index = () => {
   }, [data, profileData]);
   return (
     <section
-      className={`col-span-3 shadow-xl py-6 px-4 h-fit ${
+      className={`col-start-10 col-span-3 shadow-xl py-6 px-4 h-fit ${
         pathname !== "/" && "hidden"
       } max-lg:hidden`}
     >

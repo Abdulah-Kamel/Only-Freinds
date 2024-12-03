@@ -105,7 +105,8 @@ export default function UserContextProvider({ children }) {
       return true;
     } catch (err) {
       if (err.response?.status === 401) {
-        return await refreshToken();
+        // return await refreshToken();
+        return true;
       }
       return false;
     }

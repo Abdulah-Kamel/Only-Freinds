@@ -19,7 +19,7 @@ const ActionIcon = ({
   };
 
   return (
-    <section className="flex items-center gap-2 px-4">
+    <section className="flex max-sm:flex-col max-sm:justify-center items-center gap-2 px-4 max-sm:px-1">
       <button
         className="flex items-center text-black dark:text-white/90 hover:text-black/70 dark:hover:text-white/50 transition-colors hover:cursor-pointer"
         onClick={handleClick}

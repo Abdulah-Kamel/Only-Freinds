@@ -5,15 +5,16 @@ import PostActions from "./PostActions";
 import EmojiPicker from "emoji-picker-react";
 import { IoMdMore } from "react-icons/io";
 import { IoSendOutline } from "react-icons/io5";
+import PostHeader from "./PostHeader";
+import PostImage from "./PostImage";
 
-const PostCard = () => {
+const PostCard = ({ postData }) => {
   const [showPicker, setShowPicker] = useState(false);
   const [inputStr, setInputStr] = useState("");
   const [theme, setTheme] = useState("light");
   const isdark = document.getElementsByName("body");
   const textareaRef = useRef(null); // Reference for the textarea
   const pickerRef = useRef(null); // Reference for the emoji picker container
-
   const toggleTheme = () => {
     setTheme(isdark == true ? "dark" : "light");
   };
@@ -31,7 +32,33 @@ const PostCard = () => {
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // Set to scrollHeight
     }
   };
+  const [isFullBio, setIsFullBio] = useState(false);
 
+  const truncateBio = (postContent) => {
+    if (!postContent || postContent.length === 0) return "";
+    const maxLength = 110;
+    if (postContent.length <= maxLength) return postContent;
+
+    const truncated = postContent.substring(0, maxLength);
+    const lastSpaceIndex = truncated.lastIndexOf(" ");
+    const truncatedBio = truncated.substring(0, lastSpaceIndex);
+
+    return (
+      <>
+        {truncatedBio}
+        {/* Only show the '...more' link if the postContent is longer than maxLength */}
+        {postContent.length > maxLength && (
+          <span
+            className="font-bold text-black/80 dark:text-white/70"
+            onClick={() => setIsFullBio(!isFullBio)}
+            style={{ cursor: "pointer" }}
+          >
+            ...more
+          </span>
+        )}
+      </>
+    );
+  };
   // Close the emoji picker when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -58,32 +85,38 @@ const PostCard = () => {
   }, [inputStr]);
 
   return (
-    <section className="columns-auto w-[90%] relative rounded-3xl border border-base-300">
-      <section className="mb-4 border-b border-base-300 p-4">
-        <section className="flex justify-between items-center">
-          <section className="flex items-center">
-            <img
-              src="https://picsum.photos/50"
-              alt=""
-              className="rounded-full w-[50px]"
-            />
-            <section className="ms-2">
-              <p>southern_circle</p>
-            </section>
-          </section>
-          <IoMdMore size={30} role="button" />
-        </section>
-      </section>
+    <section className="columns-auto w-[90%] max-sm:w-full relative rounded-3xl border border-base-300">
+      <PostHeader
+        userId={postData?.id}
+        profileImage={postData?.profilePicture}
+        username={postData?.userName}
+      />
       <section className="p-4">
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit...more</p>
-        <img
-          src="https://picsum.photos/200"
-          alt="dummy"
-          className="w-full h-96 rounded-lg mt-4"
+        {postData?.postContent && (
+          <p className="break-words overflow-y-hidden w-full">
+            <span
+              onClick={() => setIsFullBio(!isFullBio)} // Toggle bio state on click
+            >
+              {isFullBio
+                ? postData?.postContent // Display full bio if it's expanded
+                : truncateBio(postData?.postContent)}{" "}
+              {/* Truncated bio with "more" */}
+            </span>
+          </p>
+        )}
+        <PostImage
+          postImage={postData?.postImage}
+          postContent={postData?.postContent}
         />
       </section>
-      <PostActions theme={theme} style="p-4 border-t border-base-300" />
-        {/* {showPicker ? (
+      <PostActions
+        theme={theme}
+        style="p-4 border-t border-base-300"
+        likes={postData?.likes}
+        comments={postData?.comments}
+        shares={postData?.shares}
+      />
+      {/* {showPicker ? (
           <section
             className="absolute bottom-[calc(0%+80px)] left-0 w-full"
             ref={pickerRef}

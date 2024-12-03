@@ -4,7 +4,7 @@ import { IoNotificationsOutline } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
 import { FaPlus } from "react-icons/fa6";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Switch } from "@headlessui/react";
 import { UserContext } from "../../Store/UserStore";
 
@@ -34,7 +34,7 @@ const SideBar = () => {
     { name: "Profile", icon: CgProfile, path: "/profile/me" },
   ];
   return (
-    <nav className="bg-white dark:bg-[#191E24] lg:py-5 py-2 lg:px-1 text-[#f5f5f5] lg:sticky lg:h-screen fixed lg:top-0 bottom-0 z-50 max-lg:w-full shadow-xl overflow-auto col-span-3">
+    <nav className="bg-white dark:bg-[#191E24] lg:py-5 py-2 lg:px-1 text-[#f5f5f5] lg:sticky lg:h-screen fixed lg:top-0 bottom-0 z-50 max-lg:w-full shadow-xl overflow-auto col-span-2">
       <div className="lg:block flex">
         <div className="hidden lg:block">
           <h4 className="text-black dark:text-white/90 font-bold text-xl">
@@ -43,7 +43,7 @@ const SideBar = () => {
           <p className="text-black dark:text-gray-200 text-lg">@Mazag</p>
         </div>
 
-        <div className="lg:mt-6 w-full">
+        <div className="lg:mt-6 w-full px-1 max-lg:px-4">
           <ul className="flex gap-2 lg:block w-full justify-between">
             {navItems.map((item, i) => {
               const IconComponent = item.icon; // Icon component
@@ -66,7 +66,7 @@ const SideBar = () => {
               );
             })}
             <li
-              className={`py-2 lg:ps-4 ps-2 pe-2 max-sm:w-1/5 hidden lg:flex items-center justify-between group hover:bg-[#eaeaea] dark:hover:bg-[#272C33] rounded-lg transition-colors my-2
+              className={`py-2 lg:ps-4 ps-2 pe-2 max-sm:w-1/5 hidden lg:flex lg:flex-wrap items-center justify-between group hover:bg-[#eaeaea] dark:hover:bg-[#272C33] rounded-lg transition-colors my-2
                   `}
             >
               <span className="text-lg text-black dark:text-white/90  dark:group-hover:text-[#f5f5f5] transition-colors">
@@ -90,13 +90,13 @@ const SideBar = () => {
               onClick={handleLogOut}
             >
               {loading ? (
-              <>
-                <span className="loading loading-spinner"></span>
-                loading
-              </>
-            ) : (
-              "Logout"
-            )}
+                <>
+                  <span className="loading loading-spinner"></span>
+                  loading
+                </>
+              ) : (
+                "Logout"
+              )}
             </li>
           </ul>
         </div>

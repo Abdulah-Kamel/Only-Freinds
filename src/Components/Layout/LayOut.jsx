@@ -5,9 +5,9 @@ import Followers_Bar from "../../Pages/Followers_Bar";
 
 const LayOut = () => {
   return (
-    <section className="min-h-screen grid grid-cols-12">
+    <section className="grid grid-cols-12">
       <SideBar />
-      <Outlet className="col-span-full" />
+      <Outlet />
       <Followers_Bar />
     </section>
   );

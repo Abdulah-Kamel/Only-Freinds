@@ -5,7 +5,7 @@ const Container = ({ children, customeStyle }) => {
   const { pathname } = useLocation();
   return (
     <section
-      className={`col-span-full lg:col-start-4 ${pathname !== "/" ? "lg:col-span-9" :""}lg:col-span-6 w-full lg:ms-auto ${customeStyle}`}
+      className={`lg:col-start-3 ${pathname == "/" ? "lg:col-span-7" :"col-span-full "} w-full col-span-full lg:ms-auto ${customeStyle}`}
     >
       {children}
     </section>

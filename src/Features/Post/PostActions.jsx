@@ -4,7 +4,7 @@ import { FaHeart, FaRegHeart } from "react-icons/fa6";
 import ActionIcon from "./ActionIcon";
 import { PiShareFat } from "react-icons/pi";
 
-const PostActions = ({ style }) => {
+const PostActions = ({ style,likes,comments,shares }) => {
   const [liked, setLiked] = useState(false);
 
   return (
