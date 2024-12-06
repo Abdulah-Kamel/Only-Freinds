@@ -11,36 +11,36 @@ const PostModal = ({ postData, setpostModal }) => {
   useEffect(() => {}, [postData]);
   return (
     <dialog id="post_modal" className="modal">
-      <div className="grid grid-cols-12 w-11/12 max-w-5xl h-[90%] modal-box px-6 py-3 lg:card-side bg-base-100 max-lg:overflow-y-scroll">
+      <div className="grid grid-cols-12 grid-flow-row w-11/12 max-w-5xl h-[90%] p-0 bg-base-100 overflow-y-scroll">
         <figure className="col-span-6 max-lg:col-span-full">
           <img
             src={postData?.postImage}
             alt="Album"
-            className="w-full h-full rounded-3xl"
+            className="w-full h-full"
           />
         </figure>
-        <div className="card-body p-3 relative col-span-6 max-lg:col-span-full">
-          <header className=" border-b border-gray-600 pb-4">
-            <section className="flex justify-between items-center">
+        <div className="relative col-span-6 max-lg:col-span-full lg:min-h-[500px]">
+          <header className="py-4 px-4">
+            <section className="flex flex-col justify-between gap-1">
               <section className="flex items-center">
-                <Link to={`/profile/${postData?.id}`}>
+                <Link to={`/profile/${postData?.id}`} className="w-[70px]">
                   <img
                     src={postData?.profilePicture}
-                    alt=""
-                    className="rounded-full w-[50px]"
+                    alt={` profile picture of ${postData?.userName}`}
+                    className="rounded-full"
                   />
                 </Link>
                 <Link to={`/profile/${postData?.id}`} className="ms-2">
                   <p>{postData?.userName}</p>
                 </Link>
               </section>
-              <IoMdMore size={30} role="button" />
+              <p className="break-words">
+                {postData?.postContent}
+              </p>
             </section>
           </header>
-          <section className="p-2 my-4">
-            <p className="break-words">{postData?.postContent}</p>
-          </section>
-          <section className="lg:p-2 p-4 lg:absolute flex justify-between w-full items-center bottom-0 ring-1 ring-gray-600 rounded-sm">
+
+          <footer className="p-4 lg:absolute flex justify-between w-full items-center bottom-0 border-t border-gray-600">
             <ActionIcon
               child={<LikeComponent />}
               number={"1200"}
@@ -58,8 +58,30 @@ const PostModal = ({ postData, setpostModal }) => {
               number={"50"}
               type="shares"
             />
-          </section>
+          </footer>
         </div>
+        <div className="col-span-full">
+          <header className="py-4 px-4">
+            <section className="flex flex-col justify-between gap-1">
+              <section className="flex items-center">
+                <Link to={`/profile/${postData?.id}`} className="w-[70px]">
+                  <img
+                    src={postData?.profilePicture}
+                    alt={` profile picture of ${postData?.userName}`}
+                    className="rounded-full"
+                  />
+                </Link>
+                <Link to={`/profile/${postData?.id}`} className="ms-2">
+                  <p>{postData?.userName}</p>
+                </Link>
+              </section>
+              <p className="break-words">
+                {postData?.postContent}
+              </p>
+            </section>
+          </header>
+        </div>
+        
       </div>
       <form method="dialog" className="modal-backdrop">
         <button className="cursor-auto" onClick={() => setpostModal(false)}>

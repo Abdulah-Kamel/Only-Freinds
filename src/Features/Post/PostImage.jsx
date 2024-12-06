@@ -9,7 +9,7 @@ const PostImage = ({ postImage, postContent }) => {
         e.target.onerror = null;
         e.target.src = "https://placehold.co/600x400?text=Image+not+available";
       }}
-      className="w-full h-96 rounded-lg mt-4"
+      className="w-full h-96"
     />
   );
 };

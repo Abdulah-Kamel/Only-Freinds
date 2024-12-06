@@ -45,9 +45,9 @@ const PostCard = ({ postData }) => {
         profileImage={postData?.profilePicture}
         username={postData?.userName}
       />
-      <section className="p-4">
+      <section>
         {postData?.postContent && (
-          <p className="break-words overflow-y-hidden w-full">
+          <p className="break-words overflow-y-hidden w-full px-4 py-2">
             <span
               onClick={() => setIsFullBio(!isFullBio)} // Toggle bio state on click
             >
@@ -63,7 +63,7 @@ const PostCard = ({ postData }) => {
           postContent={postData?.postContent}
         />
       </section>
-      <footer className="p-4 border-t border-base-300 flex justify-between items-center">
+      <footer className="p-4 border-t mt-3 border-base-300 flex justify-between items-center">
         <ActionIcon
           child={<LikeComponent />}
           number={postData?.likes}
