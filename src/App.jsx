@@ -16,8 +16,7 @@ import EditProfile from "./Features/Profile/EditProfile";
 import { themeChange } from "theme-change";
 import { jwtDecode } from "jwt-decode";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-
+import Google_Auth from "./Features/Auth/Google_Auth";
 
 export const router = createBrowserRouter([
   {
@@ -83,6 +82,14 @@ export const router = createBrowserRouter([
     element: (
       <PublicRoute>
         <SignIn />
+      </PublicRoute>
+    ),
+  },
+  {
+    path: "auth/google",
+    element: (
+      <PublicRoute>
+        <Google_Auth />
       </PublicRoute>
     ),
   },

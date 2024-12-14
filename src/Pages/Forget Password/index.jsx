@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -9,23 +9,24 @@ const index = () => {
   const navigate = useNavigate();
   const [lodaing, setLoading] = useState(false);
   const handleForgetPassword = (data) => {
+    console.log(data);
     axios
       .post(
-        "https://mazag-production.up.railway.app/users/reset_password_confirm/",
+        "https://mazag-production.up.railway.app/users/request-reset-password/",
         {
           ...data,
         }
       )
       .then((res) => {
         setLoading(false);
-        if (res.status === 200) {
-          localStorage.setItem("token", res.data.access);
-          localStorage.setItem("refresh", res.data.refresh);
-          navigate("/");
+        console.log(res);
+        if (res.status === 201) {
+          navigate("/reset-password");
         }
       })
       .catch((err) => {
         setLoading(false);
+        console.log("error in forget password", err);
       });
   };
   const schema = yup
@@ -41,10 +42,16 @@ const index = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
+  useEffect(() => {
+    if (Object.keys(errors).length > 0) {
+      setLoading(false);
+    }
+  }, [errors]);
 
   const onSubmit = (data) => handleForgetPassword(data);
   return (
-    <section className="container min-h-screen mx-auto max-sm:px-4 py-5 flex justify-center items-center">
+    <section className="container min-h-screen mx-auto max-sm:px-4 py-5 flex flex-col justify-center items-center">
+      <h1 className="text-3xl font-bold mb-8 text-start">Forget Password</h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col items-center justify-center gap-4 sm:w-[75%] w-full"
@@ -72,7 +79,6 @@ const index = () => {
               Send
             </button>
           )}
-          <Link to="/reset-password" className="link link-primary text-lg">Reset password</Link>
         </section>
       </form>
     </section>

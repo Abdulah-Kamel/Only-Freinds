@@ -6,6 +6,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
 import TextInput from "../../Components/TextInput/TextInput";
+import LoginWithGoogle from "../../Features/Auth/LoginWithGoogle";
 const index = () => {
   const navigate = useNavigate();
   const [lodaing, setLoading] = useState(false);
@@ -150,6 +151,7 @@ const index = () => {
           </p>
         </section>
       </form>
+      <LoginWithGoogle />
     </section>
   );
 };

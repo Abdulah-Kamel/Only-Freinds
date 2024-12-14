@@ -116,7 +116,7 @@ const Home = () => {
   ];
 
   return (
-    <Container customeStyle={"max-sm:pb-24 max-sm:pt-12 py-8 "}>
+    <Container customeStyle={"max-sm:px-4 max-sm:pb-24 max-sm:pt-12 py-8 "}>
       <section className="flex flex-col justify-center items-center gap-8 md:mb-24 lg:mb-0">
         {posts.map((post, index) => (
           <PostCard key={index} postData={post} />

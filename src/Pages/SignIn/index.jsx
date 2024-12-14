@@ -5,6 +5,9 @@ import * as yup from "yup";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import TextInput from "../../Components/TextInput/TextInput";
+import { FcGoogle } from "react-icons/fc";
+import LoginWithGoogle from "../../Features/Auth/LoginWithGoogle";
+
 const index = () => {
   const navigate = useNavigate();
   const [lodaing, setLoading] = useState(false);
@@ -60,7 +63,7 @@ const index = () => {
   
   const onSubmit = (data) => signUp(data);
   return (
-    <section className="container min-h-screen mx-auto max-sm:px-4 flex flex-col justify-center items-center">
+    <section className="container min-h-screen mx-auto max-sm:px-4 flex flex-col justify-center items-center py-4">
       <h1 className="text-3xl font-bold text-black dark:text-white/90 mb-4">
         Sign In
       </h1>
@@ -124,6 +127,7 @@ const index = () => {
           </p>
         </section>
       </form>
+      <LoginWithGoogle />
     </section>
   );
 };

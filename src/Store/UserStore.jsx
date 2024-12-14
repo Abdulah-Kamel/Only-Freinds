@@ -105,8 +105,7 @@ export default function UserContextProvider({ children }) {
       return true;
     } catch (err) {
       if (err.response?.status === 401) {
-        // return await refreshToken();
-        return true;
+        return await refreshToken();
       }
       return false;
     }
@@ -138,6 +137,21 @@ export default function UserContextProvider({ children }) {
     localStorage.removeItem("refresh");
     router.navigate("/login");
   };
+  const intializeGoogleLogin = async () => {
+    const data = await axios.get(
+      `${baseUrl}/auth/o/google-oauth2/?redirect_uri=http://localhost:5173/auth/google`
+    );
+    return data;
+  };
+  const exchangeCodeForTokens = async (state, code) => {
+    console.log(state, code);
+    const data = await axios
+      .post(`${baseUrl}/auth/o/google-oauth2/?code=${code}&state=${state}`)
+      .then((res) => {
+        console.log("success", res);
+      });
+    return data;
+  };
 
   useEffect(() => {
     validateToken();
@@ -156,6 +170,8 @@ export default function UserContextProvider({ children }) {
         getAllProfile,
         UnfollowProfileById,
         logOut,
+        intializeGoogleLogin,
+        exchangeCodeForTokens,
       }}
     >
       {children}
