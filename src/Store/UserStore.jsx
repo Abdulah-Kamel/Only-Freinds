@@ -139,7 +139,7 @@ export default function UserContextProvider({ children }) {
   };
   const intializeGoogleLogin = async () => {
     const data = await axios.get(
-      `${baseUrl}/auth/o/google-oauth2/?redirect_uri=http://localhost:5173/auth/google`
+      `${baseUrl}/auth/o/google-oauth2/?redirect_uri=https://mazag.vercel.app/auth/google`
     );
     return data;
   };
