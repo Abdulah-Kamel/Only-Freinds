@@ -21,7 +21,7 @@ const Google_Auth = () => {
     const code = queryParams.get("code");
 
     if (state && code) {
-      handleCodeExchange(state, code);
+      // handleCodeExchange(state, code);
       console.log("State:", state);
       console.log("Code:", code);
       // You can now use state and code for further processing
